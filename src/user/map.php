@@ -45,7 +45,7 @@ class Memberful_User_Map {
 		$user_exists = $user_id !== NULL && get_user_by('id', $user_id) !== FALSE;
 
 		if ( $user_exists && ! $user_mapping_exists ) {
-			if ( ! is_user_logged_in() ) {
+			if ( ! is_user_logged_in() || wp_get_current_user()->user_email === $member->email) {
 				$nonce = bin2hex(openssl_random_pseudo_bytes(32));
 
 				update_user_meta(
@@ -65,13 +65,7 @@ class Memberful_User_Map {
 			   	);
 				die();
 			} else {
-				$current_user       = wp_get_current_user();
-				$current_user_email = $current_user->user_email;
-
-				// Check the logged in user's email address against the Memberful email address
-				if ( $current_user_email !== $member->email ) {
-					wp_die( __( "It looks like Memberful didn't create your user on this WordPress site. Please make sure you're signed in as your WordPress user, then sign in through Memberful" ));
-				}
+				wp_die( __( "It looks like Memberful didn't create your user on this WordPress site. Please make sure you're signed in as your WordPress user, then sign in through Memberful" ));
 			}
 		}
 
