@@ -173,8 +173,8 @@ class Memberful_User_Mapping_Ensure_User {
 			$user_data['show_admin_bar_frontend'] = FALSE;
 			$user_data['user_login']              = $this->member->username;
 			$user_data['user_nicename']           = $this->member->username;
-			$user_data['nickname']                = $this->member->full_name
-			$user_data['display_name']            = $this->member->full_name
+			$user_data['nickname']                = $this->member->full_name;
+			$user_data['display_name']            = $this->member->full_name;
 		}
 
 		$user_data['user_email'] = $this->member->email;
