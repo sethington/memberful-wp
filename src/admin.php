@@ -133,7 +133,6 @@ function memberful_wp_register() {
 	}
 	else if (!empty($_POST['mf_auth_data'])){
 		$obj = json_decode(stripslashes($_POST['mf_auth_data']),true);
-		error_log(var_dump($obj));
 
 		$success = memberful_wp_activate_manual($obj);
 		if ($success===TRUE){
