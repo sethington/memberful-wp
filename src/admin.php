@@ -131,6 +131,19 @@ function memberful_wp_register() {
 
 		return wp_redirect( admin_url( 'options-general.php?page=memberful_options' ) );
 	}
+	else if (!empty($_POST['mf_auth_data'])){
+		$obj = json_decode(stripslashes($_POST['mf_auth_data']),true);
+		error_log(var_dump($obj));
+
+		$success = memberful_wp_activate_manual($obj);
+		if ($success===TRUE){
+			// sync
+			memberful_wp_sync_downloads();
+			memberful_wp_sync_subscription_plans();
+		}
+
+		return wp_redirect( admin_url( 'options-general.php?page=memberful_options' ) );
+	}
 
 	memberful_wp_render( 'setup', $vars );
 }
@@ -253,6 +266,8 @@ function memberful_wp_options() {
 				return memberful_wp_debug();
 			case 'advanced_settings':
 				return memberful_wp_advanced_settings();
+			case 'auth_settings':
+				return memberful_wp_auth_settings();
 		}
 	}
 
@@ -298,6 +313,31 @@ function memberful_wp_activate( $code ) {
 	memberful_wp_send_site_options_to_memberful();
 
 	return TRUE;
+}
+
+/**
+ * Used to add previous authenticated Memberful data to a new WP instance
+ *
+ * @param $vals array Values needed to complete the registration
+ */
+function memberful_wp_activate_manual($vals){
+	update_option( 'memberful_client_id', $vals['memberful_client_id'] );
+	update_option( 'memberful_client_secret', $vals['memberful_client_secret'] );
+	update_option( 'memberful_api_key', $vals['memberful_api_key'] );
+	update_option( 'memberful_site', $vals['memberful_site'] );
+	update_option( 'memberful_webhook_secret', $vals['memberful_webhook_secret'] );
+
+	return TRUE;
+}
+
+function memberful_wp_auth_settings(){
+
+	$opts = memberful_wp_auth_option_values();
+
+	$vars = array(
+		'current_auth_settings' => $opts,
+	);
+	memberful_wp_render( 'auth_settings', $vars );
 }
 
 function memberful_wp_advanced_settings() {

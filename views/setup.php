@@ -15,6 +15,16 @@
 					<?php memberful_wp_nonce_field( 'memberful_options' ); ?>
 				</fieldset>
 			</form>
+
+			<h3><?php _e( 'Setting up another Wordpress instance and want to use the same Memberful account? Paste your setup data here:', 'memberful' ); ?></h3>
+			<form method="POST" action="<?php echo admin_url( 'options-general.php?page=memberful_options&noheader=true' ) ?>">
+				<fieldset>
+					<textarea placeholder="<?php echo esc_attr( __( 'Paste your previous WordPress auth data key here...', 'memberful' ) ); ?>" name="mf_auth_data"></textarea>
+					<button class="button button-primary button-large"><?php _e( 'Load Existing Memberful Authentication', 'memberful' ); ?></button>
+					<input type="hidden" name="action" value="register" />
+					<?php memberful_wp_nonce_field( 'memberful_options' ); ?>
+				</fieldset>
+			</form>
 		</div>
 	</div>
 </div>

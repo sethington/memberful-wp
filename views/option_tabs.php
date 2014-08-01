@@ -15,6 +15,11 @@
 			'title' => __('Advanced Role Mapping'),
 			'url'   => memberful_wp_plugin_advanced_settings_url()
 		),
+		array(
+			'id'    => 'auth_settings',
+			'title' => __('Auth Settings'),
+			'url'   => memberful_wp_plugin_auth_settings_url()
+		),
 	);
 ?>
 <h2 class="nav-tab-wrapper">

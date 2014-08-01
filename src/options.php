@@ -36,6 +36,20 @@ function memberful_wp_connection_options() {
 	);
 }
 
+/**
+ * Options that are related to how a memberful account is currently authenticated
+ * @return array
+ */
+function memberful_wp_auth_options(){
+	return array(
+		'memberful_client_id',
+		'memberful_client_secret',
+		'memberful_api_key',
+		'memberful_webhook_secret',
+		'memberful_site'
+	);	
+}
+
 function memberful_wp_is_connected_to_site() {
 	return !! get_option( 'memberful_client_id', FALSE );
 }
@@ -56,6 +70,20 @@ function memberful_wp_option_values() {
 	}
 
 	return $config;
+}
+
+function memberful_wp_auth_option_values(){
+	$auth_options = memberful_wp_auth_options();
+	$vals = memberful_wp_option_values();
+	$keys = array_keys($vals);
+
+	$results = [];
+	foreach($vals as $key=>$val){
+		if (in_array($key, $auth_options)){
+			$results[$key] = $val;
+		}
+	}
+	return $results;
 }
 
 function memberful_wp_prepare_to_sync_options_to_memberful($new_value) {
