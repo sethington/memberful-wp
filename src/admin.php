@@ -325,16 +325,49 @@ function memberful_wp_activate_manual($vals){
 	update_option( 'memberful_api_key', $vals['memberful_api_key'] );
 	update_option( 'memberful_site', $vals['memberful_site'] );
 	update_option( 'memberful_webhook_secret', $vals['memberful_webhook_secret'] );
+	update_option( 'memberful_embed_enabled', "1");
+
+	// send site info to memberful
+	memberful_wp_send_site_options_to_memberful();
 
 	return TRUE;
 }
 
 function memberful_wp_auth_settings(){
 
+	$trusted_domains = memberful_wp_trusted_domains();
+	if (!empty($_POST)){
+		// make trusted an array if it isnt
+		if (!is_array($trusted_domains)){
+			$trusted_domains = [];
+		}
+
+		// if adding a new domain, do so and update
+		if ($_POST['memberful_new_domain'] != ""){
+			$trusted_domains[] = $_POST['memberful_new_domain'];
+			update_option( 'memberful_trusted_domains', $trusted_domains );
+		}
+
+		// index based delete for removing existing trusted site
+		foreach($_POST as $key=>$val){
+			if (strpos($key,"delete_") === 0){
+				$index = str_replace("delete_", "", $key);
+				unset($trusted_domains[$index]);
+				$trusted_domains = array_values($trusted_domains);
+
+				update_option( 'memberful_trusted_domains', $trusted_domains);
+				break;
+			}
+		}
+		
+		Memberful_Wp_Reporting::report( __('Domains updated') );
+	}
+
 	$opts = memberful_wp_auth_option_values();
 
 	$vars = array(
 		'current_auth_settings' => $opts,
+		'trusted_domains' => $trusted_domains
 	);
 	memberful_wp_render( 'auth_settings', $vars );
 }

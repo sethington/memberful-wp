@@ -48,6 +48,12 @@ class Memberful_Wp_Endpoint_Auth implements Memberful_Wp_Endpoint {
 			$url = $_COOKIE['memberful_redirect'];
 		} else {
 			$url = home_url();
+
+			// if this login is coming from another domain, memberful will redirect them to the root domain
+			// if that is the case, send them back to the trusted domain they came from for authentication
+			if ($url != $_SERVER['HTTP_REFERER']){
+				$url = $_SERVER['HTTP_REFERER']."?".$_SERVER['QUERY_STRING'];
+			}
 		}
 
 		return apply_filters( 'memberful_wp_after_sign_in_url', $url );

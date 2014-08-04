@@ -19,6 +19,7 @@ function memberful_wp_all_options() {
 		'memberful_error_log' => array(),
 		'memberful_role_active_customer' => 'subscriber',
 		'memberful_role_inactive_customer' => 'subscriber',
+		'memberful_trusted_domains' => array(),
 		MEMBERFUL_OPTION_DEFAULT_MARKETING_CONTENT => NULL
 	);
 }
@@ -48,6 +49,10 @@ function memberful_wp_auth_options(){
 		'memberful_webhook_secret',
 		'memberful_site'
 	);	
+}
+
+function memberful_wp_trusted_domains(){
+	return get_option("memberful_trusted_domains");
 }
 
 function memberful_wp_is_connected_to_site() {

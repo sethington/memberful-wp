@@ -23,12 +23,17 @@ function memberful_wp_nonce_field( $action ) {
  */
 function memberful_wp_allowed_hosts( $content ) {
 	$site = get_option( 'memberful_site' );
+	$trusted_domains = get_option( 'memberful_trusted_domains' );
 
 	if ( !empty( $site ) ) {
 		$memberful_url = parse_url( $site );
 
 		if ( $memberful_url !== false )
 			$content[] = $memberful_url['host'];
+	}
+
+	foreach($trusted_domains as $domain){
+		$content[] = $domain;	
 	}
 
 	return $content;

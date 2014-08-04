@@ -27,4 +27,29 @@
 		<textarea style="width:450px;height:150px;"><?php echo json_encode($current_auth_settings); ?></textarea>
 	</div>
 
+	<div>
+		<h3>Trusted Domains (hostname only)</h3>
+		<form method="post" action="<?php echo memberful_wp_plugin_auth_settings_url( ); ?>">
+		<table>
+			<thead>
+				<tr>
+				<td>
+					<input type='text' placeholder='Enter domain' name="memberful_new_domain" />
+				</td>
+				<td><input type='submit' value='Add Domain' />
+				</tr>
+			</thead>
+			<tbody>
+				<?php for($i=0;$i<count($trusted_domains);$i++): ?>
+				<tr>
+					<td><?php echo $trusted_domains[$i]; ?></td>
+					<td><input type='submit' value='Delete' name='delete_<?php echo $i; ?>' /></td>
+				</tr>
+				<?php endfor; ?>
+			</tbody>
+		</table>
+		<?php memberful_wp_nonce_field( 'memberful_options' ); ?>
+		</form>
+	</div>
+
 </div>
