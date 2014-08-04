@@ -327,8 +327,8 @@ function memberful_wp_activate_manual($vals){
 	update_option( 'memberful_webhook_secret', $vals['memberful_webhook_secret'] );
 	update_option( 'memberful_embed_enabled', "1");
 
-	// send site info to memberful
-	memberful_wp_send_site_options_to_memberful();
+	// send site info to memberful (commented out for now, not necessary with trusted domain auth forwarding)
+	// memberful_wp_send_site_options_to_memberful();
 
 	return TRUE;
 }
